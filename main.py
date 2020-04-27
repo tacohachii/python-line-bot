@@ -3,7 +3,7 @@ from linebot import LineBotApi,WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent,TextMessage,TextSendMessage
 import os
-from db_line import new_register, reg_menu_name, reg_menu_recipe, find_latest_value, db_search
+from db_line import new_register, reg_menu_name, reg_menu_recipe, check_latest_column, db_search
 
 app = Flask(__name__)
 
@@ -51,17 +51,17 @@ def handle_message(event):
         return_message = '料理名を入力してください'
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text=return_message))
     else:
-        if find_latest_value(user_lineid, 'user_id') == False:
+        if check_latest_column(user_lineid, 'user_id') == False:
             # user_idが見つからない => レシピを登録してないとき
             return_message = 'レシピがありません'
             line_bot_api.reply_message(event.reply_token,TextSendMessage(text=return_message))
-        elif find_latest_value(user_lineid, 'name') == False:
+        elif check_latest_column(user_lineid, 'name') == False:
             # 最新からmenu_nameが見つからない => 料理名を登録する
             menu_name = message
             reg_menu_name(user_lineid, menu_name)
             return_message = '料理名が登録されました\nレシピを入力してください'
             line_bot_api.reply_message(event.reply_token,TextSendMessage(text=return_message))
-        elif find_latest_value(user_lineid, 'recipe') == False:
+        elif check_latest_column(user_lineid, 'recipe') == False:
             # 最新からmenu_recipeが見つからない => レシピを登録する
             menu_recipe = message
             reg_menu_recipe(user_lineid, menu_recipe)

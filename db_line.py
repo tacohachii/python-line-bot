@@ -27,7 +27,7 @@ def db_search(user_lineid, menu_name):
     hoge = cursor.fetchall()
     return hoge[0][0]
 
-def find_latest_value(user_lineid, column):
+def check_latest_column(user_lineid, column):
     if column == 'user_id':
         cursor.execute("SELECT * FROM recipe WHERE user_id= '{0}'".format(user_lineid))
     if column == 'name':
@@ -38,7 +38,7 @@ def find_latest_value(user_lineid, column):
         cursor.execute("SELECT * FROM recipe WHERE recipe IS NOT NULL and recipe IS NULL and id = (SELECT id FROM recipe WHERE user_id= '{0}' ORDER BY id);".format(user_lineid))
     
     hoge = cursor.fetchall()
-    if len(hoge) == 0:
+    if len(hoge) != 0:
         return False
     else:
         return True
