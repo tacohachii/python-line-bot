@@ -41,14 +41,11 @@ def handle_message(event):
     message = event.message.text
     # ユーザーIDを受け取る
     user_lineid = event.source.user_id
-    # ユーザーがいないときは作る
-    if serch_user(user_lineid) == False:
-      new_register(user_lineid)
 
     # 「レシピを登録」
     if message == "レシピを登録":
-        # 最新のユーザーは登録が終わっている？
-        if finish_register(user_lineid) == True:
+        # ユーザーがいないときは作る or 最新のユーザーは登録が終わっている？
+        if serch_user(user_lineid) == False or finish_register(user_lineid) == True: 
           # 新規登録可能
           new_register(user_lineid)
           return_message = '登録を開始します\n料理名を入力してください'
