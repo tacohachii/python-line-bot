@@ -3,7 +3,7 @@ from linebot import LineBotApi,WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent,TextMessage,TextSendMessage
 import os
-from db_line  import new_register, reg_menu_name, reg_menu_recipe, find_latest_value, db_search
+from db_line import new_register, reg_menu_name, reg_menu_recipe, find_latest_value, db_search
 
 app = Flask(__name__)
 
