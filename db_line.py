@@ -23,7 +23,7 @@ def reg_menu_recipe(user_lineid, menu_recipe):
     return 
 
 def db_search(user_lineid, menu_name):
-    cursor.execute("SELECT recipe FROM recipe WHERE user_id= '{0}' and name= '{1}' and recipe IS NOT NULL;".format(user_lineid, menu_name))
+    cursor.execute("SELECT recipe FROM recipe WHERE user_id= '{0}' and name= '{1}' and recipe IS NOT NULL ORDER BY id DESC LIMIT 1;".format(user_lineid, menu_name))
     hoge = cursor.fetchall()
     if len(hoge) == 0:
       return hoge

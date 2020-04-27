@@ -45,7 +45,7 @@ def handle_message(event):
     user_lineid = event.source.user_id
     if message == "レシピを登録":
         new_register(user_lineid)
-        return_message = '料理名を入力してください'
+        return_message = '登録を開始します\n料理名を入力してください'
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text=return_message))
     elif message == "レシピを表示":
         return_message = 'レシピを表示します\n料理名を入力してください'
@@ -53,7 +53,7 @@ def handle_message(event):
     else:
         if serch_user(user_lineid) == False:
             # user_idが見つからない => レシピを登録してないとき
-            return_message = '「レシピを登録」からレシピを登録してください'
+            return_message = '「レシピを登録」で\nレシピを登録してください'
             line_bot_api.reply_message(event.reply_token,TextSendMessage(text=return_message))
         elif check_latest_column(user_lineid, 'name') == False:
             # 最新からmenu_nameが見つからない => 料理名を登録する
