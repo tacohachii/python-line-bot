@@ -43,13 +43,11 @@ def handle_message(event):
     # ここから下で処理を書く
     message = event.message.text
     user_lineid = event.source.user_id
-    if message == 'レシピを登録':
+    if message == "レシピを登録":
         new_register(user_lineid)
         return_message = '料理名を入力してください'
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text=return_message))
-    else: 
-        line_bot_api.reply_message(event.reply_token,TextSendMessage(text=message))
-    elif message == 'レシピを表示': 
+    elif message == "レシピを表示":
         return_message = '料理名を入力してください'
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text=return_message))
     else:
@@ -74,6 +72,9 @@ def handle_message(event):
             return_recipe = db_search(user_lineid,menu_name)
             return_message = 'こちらがレシピです\n' + return_recipe
             line_bot_api.reply_message(event.reply_token,TextSendMessage(text=return_message))
+        else: 
+          return_message = '入力が間違っています'
+          line_bot_api.reply_message(event.reply_token,TextSendMessage(text=message))
 
 if __name__=="__main__":
     port=int(os.getenv("PORT", 5000))
