@@ -3,7 +3,7 @@ from linebot import LineBotApi,WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent,TextMessage,TextSendMessage
 import os
-from db_line import new_register, reg_menu_name, reg_menu_recipe, check_latest_column, db_search
+from db_line import new_register, serch_user, reg_menu_name, reg_menu_recipe, check_latest_column, db_search
 
 app = Flask(__name__)
 
@@ -51,9 +51,9 @@ def handle_message(event):
         return_message = '料理名を入力してください'
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text=return_message))
     else:
-        if check_latest_column(user_lineid, 'user_id') == False:
+        if serch_user(user_lineid) == False:
             # user_idが見つからない => レシピを登録してないとき
-            return_message = 'レシピがありません'
+            return_message = '「レシピを登録」からレシピを登録してください'
             line_bot_api.reply_message(event.reply_token,TextSendMessage(text=return_message))
         elif check_latest_column(user_lineid, 'name') == False:
             # 最新からmenu_nameが見つからない => 料理名を登録する

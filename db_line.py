@@ -27,6 +27,14 @@ def db_search(user_lineid, menu_name):
     hoge = cursor.fetchall()
     return hoge[0][0]
 
+def serch_user(user_lineid):
+      cursor.execute("SELECT * FROM recipe WHERE user_id= '{0}'".format(user_lineid))
+      hoge = cursor.fetchall()
+      if len(hoge) == 0:
+          return False
+      else:
+          return True
+
 def check_latest_column(user_lineid, column):
     if column == 'user_id':
         cursor.execute("SELECT * FROM recipe WHERE user_id= '{0}'".format(user_lineid))
