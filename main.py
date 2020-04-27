@@ -16,6 +16,11 @@ line_bot_api=LineBotApi(YOUR_CHANNEL_ACCESS_TOKEN)
 handler=WebhookHandler(YOUR_CHANNEL_SECRET)
 
 # LINEからメッセくるとここに入る
+@app.route("/index",methods=["POST"])
+def index():
+    return
+
+# LINEからメッセくるとここに入る
 @app.route("/callback",methods=["POST"])
 def callback():
     #絶対いる
@@ -31,9 +36,9 @@ def callback():
     return "OK"
 
 
-@handler.add(MessageEvent,message=TextMessage)
+@handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    #検証に使う
+    # 検証に使う
     if event.reply_token == "00000000000000000000000000000000":
         return
 
