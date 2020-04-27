@@ -55,17 +55,17 @@ def handle_message(event):
             # user_idが見つからない => レシピを登録してないとき
             return_message = 'レシピがありません'
             line_bot_api.reply_message(event.reply_token,TextSendMessage(text=return_message))
-        elif find_latest_value(user_lineid, message, 'name') == False:
-            # 最新からmenu_nameが見つからない => 料理名を登録する
-            menu_name = message
-            reg_menu_name(user_lineid, menu_name)
-            return_message = '料理名が登録されました\nレシピを入力してください'
-            line_bot_api.reply_message(event.reply_token,TextSendMessage(text=return_message))
         elif find_latest_value(user_lineid, message, 'recipe') == False:
             # 最新からmenu_recipeが見つからない => レシピを登録する
             menu_recipe = message
             reg_menu_recipe(user_lineid, menu_recipe)
             return_message = 'レシピが登録されました\nメニュー登録完了'
+            line_bot_api.reply_message(event.reply_token,TextSendMessage(text=return_message))
+        elif find_latest_value(user_lineid, message, 'name') == False:
+            # 最新からmenu_nameが見つからない => 料理名を登録する
+            menu_name = message
+            reg_menu_name(user_lineid, menu_name)
+            return_message = '料理名が登録されました\nレシピを入力してください'
             line_bot_api.reply_message(event.reply_token,TextSendMessage(text=return_message))
         elif len(db_search(user_lineid, menu_name)) == 0:
             # 全体でmenu_nameで検索したら見つかった => レシピを表示する
