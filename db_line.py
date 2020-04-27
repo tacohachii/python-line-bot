@@ -7,7 +7,7 @@ conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 cursor = conn.cursor()
     
 def new_register(user_lineid):
-    cursor.execute("INSERT INTO recipe(user_id) VALUES(%s);" % user_lineid)
+    cursor.execute("INSERT INTO recipe(user_id) VALUES({0});".format(user_lineid))
     conn.commit()
     return
 
@@ -29,7 +29,7 @@ def db_search(user_lineid, menu_name):
 
 def find_latest_value(user_lineid, message, column):
     if column == 'user_id':
-        cursor.execute("SELECT * FROM recipe WHERE user_id= '%s'" % user_lineid)
+        cursor.execute("SELECT * FROM recipe WHERE user_id= {0}".format(user_lineid))
     if column == 'name':
         menu_name = message
         cursor.execute("SELECT * FROM recipe WHERE name = {0} and id = (SELECT id FROM recipe WHERE user_id= {1} ORDER BY id)".format(menu_name, user_lineid))
