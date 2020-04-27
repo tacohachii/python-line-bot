@@ -39,7 +39,7 @@ def callback():
 def handle_message(event):
     # 検証に使う
     if event.reply_token == "00000000000000000000000000000000":
-        return
+        return 
         
     # ここから下で処理を書く
     message = event.message.text
@@ -48,6 +48,8 @@ def handle_message(event):
         new_register(user_lineid)
         return_message = '料理名を入力してください'
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text=return_message))
+    else: 
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text=message))
     # elif message == 'レシピを表示': 
     #     return_message = '料理名を入力してください'
     #     line_bot_api.reply_message(event.reply_token,TextSendMessage(text=return_message))
