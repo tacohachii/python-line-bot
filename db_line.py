@@ -13,12 +13,12 @@ def new_register(user_lineid):
 
 def reg_menu_name(user_lineid, menu_name):
     # 最新のユーザーを取ってきてメニュー名を入れている
-    cursor.execute("UPDATE recipe SET name = '%s' WHERE id = (SELECT id FROM recipe WHERE user_id='%s' ORDER BY id)", % menu_name, % user_lineid)
+    cursor.execute("UPDATE recipe SET name = ${0} WHERE id = (SELECT id FROM recipe WHERE user_id= ${1} ORDER BY id)".format(menu_name, user_lineid))
     conn.commit()
     return 
     
 def reg_menu_recipe(user_lineid, menu_recipe):
-    cursor.execute("UPDATE recipe SET recipe = '%s' WHERE id = (SELECT id FROM recipe WHERE user_id='%s' ORDER BY id)", % menu_recipe, % user_lineid)
+    cursor.execute("UPDATE recipe SET recipe = ${0} WHERE id = (SELECT id FROM recipe WHERE user_id= ${1} ORDER BY id)".format(menu_recipe, user_lineid))
     conn.commit()
     return 
 
