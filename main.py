@@ -48,7 +48,7 @@ def handle_message(event):
         return_message = '料理名を入力してください'
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text=return_message))
     elif message == "レシピを表示":
-        return_message = '料理名を入力してください'
+        return_message = 'レシピを表示します\n料理名を入力してください'
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text=return_message))
     else:
         if serch_user(user_lineid) == False:
