@@ -16,7 +16,7 @@ def reg_menu_name(user_lineid, menu_name):
     cursor.execute("UPDATE recipe SET name = '{0}' WHERE id = (SELECT id FROM recipe WHERE user_id= '{1}' ORDER BY id DESC LIMIT 1)".format(menu_name, user_lineid))
     conn.commit()
     return 
-    UPDATE recipe SET name = 'まま' WHERE id = ((SELECT id FROM recipe WHERE user_id= 'U57a155a8d700d513a6126aa585ffb4dc' ORDER BY id DESC);
+
 def reg_menu_recipe(user_lineid, menu_recipe):
     cursor.execute("UPDATE recipe SET recipe = '{0}' WHERE id = (SELECT id FROM recipe WHERE user_id= '{1}' ORDER BY id DESC LIMIT 1)".format(menu_recipe, user_lineid))
     conn.commit()
