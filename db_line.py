@@ -7,7 +7,7 @@ conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 cursor = conn.cursor()
     
 def new_register(user_lineid):
-    cursor.execute("INSERT INTO recipe(user_id) VALUES({0});".format(user_lineid))
+    cursor.execute("INSERT INTO recipe(user_id) VALUES('{0}');".format(user_lineid))
     conn.commit()
     return
 
