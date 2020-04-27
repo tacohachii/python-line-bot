@@ -3,7 +3,7 @@ from linebot import LineBotApi,WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent,TextMessage,TextSendMessage
 import os
-from db_line import new_register, serch_user, reg_menu_name, reg_menu_recipe, check_latest_column, db_search
+from db_line import finish_register, new_register, serch_user, reg_menu_name, reg_menu_recipe, check_latest_column, db_search
 
 app = Flask(__name__)
 
@@ -14,11 +14,6 @@ YOUR_CHANNEL_ACCESS_TOKEN = os.environ['YOUR_CHANNEL_ACCESS_TOKEN']
 YOUR_CHANNEL_SECRET = os.environ['YOUR_CHANNEL_SECRET']
 line_bot_api = LineBotApi(YOUR_CHANNEL_ACCESS_TOKEN)
 handler = WebhookHandler(YOUR_CHANNEL_SECRET)
-
-# LINEからメッセくるとここに入る
-@app.route("/index", methods=["POST"])
-def index():
-    return
 
 # LINEからメッセくるとここに入る
 @app.route("/callback", methods=["POST"])
@@ -41,16 +36,33 @@ def handle_message(event):
         return 
         
     # ここから下で処理を書く
+
+    # メッセージを受け取る
     message = event.message.text
+    # ユーザーIDを受け取る
     user_lineid = event.source.user_id
+
+    # 「レシピを登録」
     if message == "レシピを登録":
-        new_register(user_lineid)
-        return_message = '登録を開始します\n料理名を入力してください'
-        line_bot_api.reply_message(event.reply_token,TextSendMessage(text=return_message))
+        # 最新のユーザーは登録が終わっている？
+        if finish_register(user_lineid) == True:
+          # 新規登録可能
+          new_register(user_lineid)
+          return_message = '登録を開始します\n料理名を入力してください'
+          line_bot_api.reply_message(event.reply_token,TextSendMessage(text=return_message))
+        else:
+          # 登録の途中
+          if check_latest_column(user_lineid, 'name') == False:
+            return_message = '登録の途中です\n料理名を入力してください'
+          elif check_latest_column(user_lineid, 'recipe') == False:
+            return_message = '登録の途中です\nレシピを入力してください'
+          line_bot_api.reply_message(event.reply_token,TextSendMessage(text=return_message))
     elif message == "レシピを表示":
+        # 「レシピを表示」
         return_message = 'レシピを表示します\n料理名を入力してください'
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text=return_message))
     else:
+        # それ以外の文字
         if serch_user(user_lineid) == False:
             # user_idが見つからない => レシピを登録してないとき
             return_message = '「レシピを登録」で\nレシピを登録してください'

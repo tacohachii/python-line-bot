@@ -18,25 +18,37 @@ def reg_menu_name(user_lineid, menu_name):
     return 
 
 def reg_menu_recipe(user_lineid, menu_recipe):
+    # 最新のユーザーを取ってきてレシピを入れている
     cursor.execute("UPDATE recipe SET recipe = '{0}' WHERE id = (SELECT id FROM recipe WHERE user_id= '{1}' ORDER BY id DESC LIMIT 1);".format(menu_recipe, user_lineid))
     conn.commit()
     return 
 
 def db_search(user_lineid, menu_name):
+    # 同じ名前で登録した場合は最新のものを取ってくる
     cursor.execute("SELECT recipe FROM recipe WHERE user_id= '{0}' and name= '{1}' and recipe IS NOT NULL ORDER BY id DESC LIMIT 1;".format(user_lineid, menu_name))
     hoge = cursor.fetchall()
     if len(hoge) == 0:
-      return hoge
+        return hoge
     else:
-      return hoge[0][0]
+        return hoge[0][0]
+
+# 最新のユーザーは登録が終わっているか？
+# name も recipe も値を持っている ==> 登録終わっている/新規に追加可能
+def finish_register(user_lineid):
+    cursor.execute("SELECT * FROM recipe WHERE name IS NOT NULL and recipe IS NOT NULL and id = (SELECT id FROM recipe WHERE user_id= '{0}' ORDER BY id DESC LIMIT 1)".format(user_lineid))
+    hoge = cursor.fetchall()
+    if len(hoge) == 0:
+        return False
+    else:
+        return True
 
 def serch_user(user_lineid):
-      cursor.execute("SELECT * FROM recipe WHERE user_id= '{0}'".format(user_lineid))
-      hoge = cursor.fetchall()
-      if len(hoge) == 0:
-          return False
-      else:
-          return True
+    cursor.execute("SELECT * FROM recipe WHERE user_id= '{0}'".format(user_lineid))
+    hoge = cursor.fetchall()
+    if len(hoge) == 0:
+        return False
+    else:
+        return True
 
 def check_latest_column(user_lineid, column):
     if column == 'name':
