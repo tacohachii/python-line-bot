@@ -29,17 +29,17 @@ def db_search(user_lineid, menu_name):
 
 def find_latest_value(user_lineid, message, column):
     if column == 'user_id':
-      cursor.execute("SELECT * FROM recipe WHERE user_id= '%s'" % user_lineid)
+        cursor.execute("SELECT * FROM recipe WHERE user_id= '%s'" % user_lineid)
     if column == 'name':
-      menu_name = message
-      cursor.execute("SELECT * FROM recipe WHERE name = '%s' and id = (SELECT id FROM recipe WHERE user_id= '%s' ORDER BY id)" % menu_name, user_lineid)
+        menu_name = message
+        cursor.execute("SELECT * FROM recipe WHERE name = '%s' and id = (SELECT id FROM recipe WHERE user_id= '%s' ORDER BY id)" % menu_name, user_lineid)
     if column == 'recipe':
-      menu_recipe = message
-      cursor.execute("SELECT * FROM recipe WHERE recipe = '%s' and id = (SELECT id FROM recipe WHERE user_id= '%s' ORDER BY id)" % menu_recipe, user_lineid)
+        menu_recipe = message
+        cursor.execute("SELECT * FROM recipe WHERE recipe = '%s' and id = (SELECT id FROM recipe WHERE user_id= '%s' ORDER BY id)" % menu_recipe, user_lineid)
     
     hoge = cursor.fetchall()
     if len(hoge) == 0:
-      return False
+        return False
     else:
-      return True
+        return True
 
