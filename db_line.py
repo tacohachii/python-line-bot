@@ -36,14 +36,12 @@ def serch_user(user_lineid):
           return True
 
 def check_latest_column(user_lineid, column):
-    if column == 'user_id':
-        cursor.execute("SELECT * FROM recipe WHERE user_id= '{0}'".format(user_lineid))
     if column == 'name':
         # ユーザーの最新の情報から，nameが空でrecipeが空のものを抜き出す
         cursor.execute("SELECT * FROM recipe WHERE name IS NULL and recipe IS NULL and id = (SELECT id FROM recipe WHERE user_id= '{0}' ORDER BY id);".format(user_lineid))
     if column == 'recipe':
         # ユーザーの最新の情報から，nameに値があってrecipeが空のものを抜き出す
-        cursor.execute("SELECT * FROM recipe WHERE recipe IS NOT NULL and recipe IS NULL and id = (SELECT id FROM recipe WHERE user_id= '{0}' ORDER BY id);".format(user_lineid))
+        cursor.execute("SELECT * FROM recipe WHERE recipe IS NOT NULL and name IS NULL and id = (SELECT id FROM recipe WHERE user_id= '{0}' ORDER BY id);".format(user_lineid))
     
     hoge = cursor.fetchall()
     if len(hoge) != 0:

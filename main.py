@@ -67,8 +67,9 @@ def handle_message(event):
             reg_menu_recipe(user_lineid, menu_recipe)
             return_message = 'レシピが登録されました\nメニュー登録完了'
             line_bot_api.reply_message(event.reply_token,TextSendMessage(text=return_message))
-        elif len(db_search(user_lineid, menu_name)) == 0:
+        elif len(db_search(user_lineid, message)) == 0:
             # 全体でmenu_nameで検索したら見つかった => レシピを表示する
+            menu_name = message
             return_recipe = db_search(user_lineid,menu_name)
             return_message = 'こちらがレシピです\n' + return_recipe
             line_bot_api.reply_message(event.reply_token,TextSendMessage(text=return_message))
